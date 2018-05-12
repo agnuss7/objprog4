@@ -1,15 +1,12 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <chrono>
 #include "Vector.h"
 #include "funkcijos.cpp"
 #include "studentai.h"
+#include "Chrono.h"
 using std::cout;
 using std::cin;
-typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::milliseconds TimeType;
 void CV2(std::string p, std::size_t N)
 {
     std::ifstream df(p);
@@ -18,7 +15,7 @@ void CV2(std::string p, std::size_t N)
     {
         df.get(blarg);
     }
-    std::vector<studentai> a;
+    Vector<studentai> a;
     a.reserve(N);
     for(std::size_t i=0; i<N; i++)
     {
@@ -28,8 +25,8 @@ void CV2(std::string p, std::size_t N)
         a.back().vidurkis();
     }
     df.close();
-    std::vector<studentai>::iterator it=std::partition(a.begin(),a.end(),negavoSkolos);
-    std::vector<studentai> a2 (it,a.end());
+    Vector<studentai>::iterator it=std::partition(a.begin(),a.end(),negavoSkolos);
+    Vector<studentai> a2 (it,a.end());
     a.erase(it,a.end());
     std::sort(a.begin(),a.end(),compare);
     std::sort(a2.begin(),a2.end(),compare);
@@ -82,10 +79,11 @@ void CV3 (std::string p, std::size_t N)
 }
 int main()
 {
+
+
     int s=10;
-    std::size_t L;
-    std::chrono::high_resolution_clock::time_point t1;
-    std::chrono::high_resolution_clock::time_point t2;
+    int L;
+    Timer T;
     do
     {
         cout<<"ivestkit operacija:\n1 - skaiciuti ivedimo trukme\n2 - skaiciuoti studentus (su 2 kont)\n3 - skaiciuoti studentus (su 3 kont)\n";
@@ -95,45 +93,45 @@ int main()
 
         if(s==1)
         {
+            int k=0;
             cout<<"kiek elementu?\n";
             cin>>L;
-
-            Vector<double> A2;
-            t1=Clock::now();
-            for(double i=0.1; i<L; i++)
+            Vector<int> A2;
+            T.reset();
+            for(int i=0; i<L; i++)
             {
                 A2.push_back(i);
+                if(A2.capacity()==A2.size()){k++;}
             }
-            t2=Clock::now();
-            cout<<"mano Vector'ius uztruko "<<(std::chrono::duration_cast<TimeType>(t2 - t1)).count()<<" milisekundes \n";
-            std::vector<double> A1;
-            t1=Clock::now();
-            for(double i=0.1; i<L; i++)
+            cout<<"mano Vector push_back'inti "<<L<<" elementu uztruko "<<T.elapsed(0)<<" mikrosekundes\nperskirstymas ivyko "<<k<<" kartu.\n";
+            std::vector<int> A1;
+            k=0;
+            T.reset();
+            for(int i=0; i<L; i++)
             {
                 A1.push_back(i);
+                if(A1.capacity()==A1.size()){k++;}
             }
-            t2=Clock::now();
-            cout<<"std::vector uztruko "<<(std::chrono::duration_cast<TimeType>(t2 - t1)).count()<<" milisekundes \n\n";
-
+            cout<<"std::vector push_back'inti "<<L<<" elementu uztruko "<<T.elapsed(0)<<" mikrosekundes\nperskirstymas ivyko "<<k<<" kartu.\n";
         }
-        if(s==2)
+        else if(s==2)
         {
-            cout<<"kiek studentu?\n";
-            cin>>L;
-            t1=Clock::now();
+            do{cout<<"kiek studentu?\n";
+            cin>>L;}while (L>100000);
+            T.reset();
             CV2("5.txt",L);
-            t2=Clock::now();
-            cout<<(std::chrono::duration_cast<TimeType>(t2 - t1)).count()<<" milisekundes \n";
+
+            cout<<T.elapsed(1)<<" milisekundes \n";
         }
-        if(s==3)
+        else if(s==3)
         {
-            cout<<"kiek studentu?\n";
-            cin>>L;
-            t1=Clock::now();
+            do{cout<<"kiek studentu?\n";
+            cin>>L;}while (L>100000);
+            T.reset();
             CV3("5.txt",L);
-            t2=Clock::now();
-            cout<<(std::chrono::duration_cast<TimeType>(t2 - t1)).count()<<" milisekundes \n";
+            cout<<T.elapsed(1)<<" milisekundes \n";
         }
+
     }
     while(s!=0);
 

@@ -1,4 +1,3 @@
-#pragma once
 #include <iterator>
 #include <algorithm>
 
@@ -6,11 +5,21 @@ template <class V>
 class Vector
 {
 private:
-    std::size_t sz;
     std::size_t cp;
+    std::size_t sz;
+
     V *el;
 public:
     using iterator = V*;
+    bool empty() const
+    {
+        if(sz==0)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
     iterator begin() const
     {
         return &el[0];
@@ -20,6 +29,10 @@ public:
         return &el[sz];
     }
     Vector(): cp(0),sz(0), el(new V[cp]) {};
+    ~Vector()
+    {
+        delete[] el;
+    }
     Vector(iterator f, iterator l):cp(std::distance(f,l)),sz(std::distance(f,l)),el(new V[cp])
     {
         for(std::size_t i=0; i<sz; i++)
@@ -29,13 +42,32 @@ public:
         }
     };
 
+    void erase (iterator f, iterator l)
+    {
+        V* A=new V[cp];
+        std::copy(el,f,A);
+        std::size_t temp=std::distance(el,f);
+        std::copy(l,el+sz,A+temp);
+        delete[] el;
+        sz=sz-std::distance(f,l);
+        el=A;
+    };
+    void clear()
+    {
+        sz=0;
+        delete[] el;
+        el=new V[cp];
+    };
     void reserve(std::size_t b)
     {
-        cp=b;
-        V* A=new V[cp];
-        std::copy(el,el+sz,A);
-        delete[] el;
-        el=A;
+        if(b>sz)
+        {
+            cp=b;
+            V* A=new V[cp];
+            std::copy(el,el+sz,A);
+            delete[] el;
+            el=A;
+        }
     };
     void resize(std::size_t b)
     {
@@ -57,7 +89,7 @@ public:
     {
         sz--;
     };
-    void push_back(V a)
+    void push_back(const V &a)
     {
         if(cp>sz)
         {
@@ -66,7 +98,12 @@ public:
         }
         else
         {
-            cp=sz*2;
+            if(cp>0)
+            {
+                cp=sz*2;
+            }
+            else
+                cp=1;
             V* A=new V[cp];
             std::copy(el,el+sz,A);
             A[sz]=a;
