@@ -2,9 +2,9 @@
 
 Laiko matavimas ir lyginimas su std::vector.
 
-##Push_back'as _mikrosekundem_ 
+## Push_back'as _mikrosekundėm_ 
 
-elementu skaicius|std::vector | mano Vector | perskirstimu skaicius
+elementų skaičius|std::vector | mano Vector | perskirstimų skaičius
 ---|---|---|---
  10000 | 0 | 0|14
 100000| 0 | 0|17
@@ -14,7 +14,7 @@ elementu skaicius|std::vector | mano Vector | perskirstimu skaicius
 
 -o1 flag'as
 
-elementu skaicius|std::vector | mano Vector
+elementų skaičius|std::vector | mano Vector
 ---|---|---
  10000 | 0 | 0
 100000| 0 | 0
@@ -24,7 +24,7 @@ elementu skaicius|std::vector | mano Vector
 
 -o2 flag'as
 
-elementu skaicius|std::vector | mano Vector
+elementų skaičius|std::vector | mano Vector
 ---|---|---
  10000 | 0 | 0
 100000| 0 | 0
@@ -34,7 +34,7 @@ elementu skaicius|std::vector | mano Vector
 
 -o3 flag'as
 
-elementu skaicius|std::vector | mano Vector
+elementų skaičius|std::vector | mano Vector
 ---|---|---
  10000 | 0 | 0
 100000| 0 | 0
@@ -44,11 +44,11 @@ elementu skaicius|std::vector | mano Vector
 
 mano Vector'ius greitesnis! 
 
-##Studentu skirstymo lyginimas _milisekundem_
+## Studentu skirstymo lyginimas _milisekundėm_
 
 #std::vector
 
-| Generuotu studentu skaicius faile |  2 konteineriai | 3 konteineriai
+| Generuotų studentų skaičius faile |  2 konteineriai | 3 konteineriai
 |------------ | -------------|--------
 |10 | 7 | 7
 |100 | 78| 79
@@ -58,7 +58,7 @@ mano Vector'ius greitesnis!
 
 #mano Vector
 
-| Generuotu studentu skaicius faile |  2 konteineriai | 3 konteineriai
+| Generuotų studentų skaičius faile |  2 konteineriai | 3 konteineriai
 |------------ | -------------|--------
 |10 | 15 | 6
 |100 |68 | 52
