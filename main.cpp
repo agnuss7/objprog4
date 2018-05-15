@@ -79,8 +79,11 @@ void CV3 (std::string p, std::size_t N)
 }
 int main()
 {
-
-
+    Vector<int> h;
+    h.push_back(8);
+    h.push_back(8);
+    h.insert(h.begin(),8,9);
+    cout<<h[8]<<"\n";
     int s=10;
     int L;
     Timer T;
@@ -88,7 +91,6 @@ int main()
     {
         cout<<"ivestkit operacija:\n1 - skaiciuti ivedimo trukme\n2 - skaiciuoti studentus (su 2 kont)\n3 - skaiciuoti studentus (su 3 kont)\n";
         cin>>s;
-
 
 
         if(s==1)
