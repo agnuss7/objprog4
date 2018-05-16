@@ -79,11 +79,12 @@ void CV3 (std::string p, std::size_t N)
 }
 int main()
 {
+    double u[]={1,2,3};
     Vector<int> h;
     h.push_back(8);
     h.push_back(8);
-    h.insert(h.begin(),8,9);
-    cout<<h[8]<<"\n";
+    h.insert(h.begin(),u,u+3);
+    cout<<h[0]<<"\n";
     int s=10;
     int L;
     Timer T;

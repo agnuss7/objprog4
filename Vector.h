@@ -1,6 +1,6 @@
 #include <iterator>
 #include <algorithm>
-
+#include <typeinfo>
 template <class V>
 
 class Vector
@@ -99,13 +99,15 @@ template<class InputIt>
     template<class InputIt>
     void insert(iterator p, InputIt f, InputIt l)
     {
-        if(sz+std::distance(f,l)>=cp){cp+=std::distance(f,l);cp*=2;}
+        std::size_t c=std::distance(f,l);
+        if(sz+c>=cp){cp+=c;cp*=2;}
         iterator A=new V[cp];
         std::copy(el,p,A);
         std::size_t temp=std::distance(el,p);
         for(std::size_t  i=0;i<c;i++)
         {
-           *(A+temp+i)=a;
+           *(A+temp+i)=*f;
+           f++;
         }
         std::copy(el+temp,el+sz,A+temp+c);
         delete [] el;
@@ -212,6 +214,10 @@ template<class InputIt>
     V &operator[](std::size_t b)
     {
         return el[b];
+    }
+    V &operator=(&V)
+    {
+
     }
 };
 
