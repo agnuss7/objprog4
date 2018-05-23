@@ -1,6 +1,5 @@
 #include <iterator>
 #include <algorithm>
-#include <typeinfo>
 template <class V>
 
 class Vector
@@ -12,7 +11,55 @@ private:
 
 public:
 using iterator = V*;
-std::size_t max_size() const
+
+///default constructor
+    Vector(): cp(0),sz(0), el(new V[cp]) {};
+///destructor
+    ~Vector()
+    {
+        delete[] el;
+    }
+///constructor, initializing with a specified range
+template<class InputIt>
+    Vector(InputIt f, InputIt l):cp(std::distance(f,l)),sz(std::distance(f,l)),el(new V[cp])
+    {
+        for(std::size_t i=0; i<sz; i++)
+        {
+            el[i]=*f;
+            f++;
+        }
+    }
+    ///constructor, initializing with a specified value
+    Vector(std::size_t n, V t):cp(n),sz(n),el(new V[cp])
+    {
+        for(std::size_t i=0; i<sz; i++)
+        {
+            el[i]=t;
+        }
+    }
+    ///constructor, initializing with an initializer list
+    Vector (std::initializer_list<V> A):cp(static_cast<std::size_t>(A.size())),sz(static_cast<std::size_t>(A.size())),el(new V[cp])
+    {
+        std::copy(A.begin(),A.end(),el);
+    }
+    ///copy constructor
+    Vector (const Vector& v):cp(v.cp),sz(v.sz),el(new V[cp])
+    {
+            delete[] el;
+            V* A=new V[v.cp];
+            std::copy(v.el,v.el+v.sz,A);
+            el=A;
+
+    }
+    ///move constructor
+    Vector (Vector&& v):cp(v.cp),sz(v.sz),el(v.el)
+    {
+            v.el=nullptr;
+            v.sz=0;
+            v.cp=0;
+    }
+    ///returns how many elements can be added
+    std::size_t max_size() const
 {
     std::allocator<V> a;
     return a.max_size();;
@@ -37,30 +84,7 @@ std::size_t max_size() const
     {
         return &el[sz];
     }
-///default constructor
-    Vector(): cp(0),sz(0), el(new V[cp]) {};
-///destructor
-    ~Vector()
-    {
-        delete[] el;
-    }
-///constructor, initializing with a specified range
-template<class InputIt>
-    Vector(InputIt f, InputIt l):cp(std::distance(f,l)),sz(std::distance(f,l)),el(new V[cp])
-    {
-        for(std::size_t i=0; i<sz; i++)
-        {
-            el[i]=*f;
-            f++;
-        }
-    }
-        Vector(std::size_t n, V t):cp(n),sz(n),el(new V[cp])
-    {
-        for(std::size_t i=0; i<sz; i++)
-        {
-            el[i]=t;
-        }
-    }
+    ///shrinks the capacity to be equal to size
     void shrink_to_fit ()
     {
         iterator A=new V[sz];
@@ -69,6 +93,7 @@ template<class InputIt>
         cp=sz;
         el=A;
     }
+    ///inserts a value in a specified position
     void insert(iterator p, const V& a)
     {
         if(sz>=cp){cp*=2;}
@@ -81,7 +106,8 @@ template<class InputIt>
         el=A;
         sz++;
     }
-    void insert(iterator p, const std::size_t c, const V& a)
+    //nezinau ka daryt, kad nesimaisytu su kitu insert'u, kai V - int.
+   /* void insert(iterator p, const std::size_t c, const V& a)
     {
         if(sz+c>=cp){cp+=c;cp*=2;}
         iterator A=new V[cp];
@@ -95,12 +121,13 @@ template<class InputIt>
         delete [] el;
         el=A;
         sz+=c;
-    }
+    }*/
+    ///inserts a specified range
     template<class InputIt>
     void insert(iterator p, InputIt f, InputIt l)
     {
         std::size_t c=std::distance(f,l);
-        if(sz+c>=cp){cp+=c;cp*=2;}
+        while(sz+c>=cp){cp*=2;}
         iterator A=new V[cp];
         std::copy(el,p,A);
         std::size_t temp=std::distance(el,p);
@@ -161,6 +188,14 @@ template<class InputIt>
             el=A;
         }
     }
+    ///access element with bounds checking
+    V &at(std::size_t b)
+    {
+        if(b<sz){
+        return el[b];
+        }
+        else {throw std::out_of_range("");}
+    }
 ///removes the last element from the vector
     void pop_back()
     {
@@ -215,10 +250,45 @@ template<class InputIt>
     {
         return el[b];
     }
-    V &operator=(&V)
+///copy = operator
+    Vector &operator=(const Vector& v)
     {
-
+        if(&v==this) {return *this;}
+        else{
+            delete[] el;
+            V* A=new V[v.cp];
+            std::copy(v.el,v.el+v.sz,A);
+            el=A;
+            sz=v.sz;
+            cp=v.cp;
+            return *this;
+        }
     }
+    ///move = operator
+    Vector &operator=(Vector&& v)
+    {
+        if(&v==this) {return *this;}
+        else{
+            delete[] el;
+            el=v.el;
+            sz=v.sz;
+            cp=v.cp;
+            v.el=nullptr;
+            v.sz=0;
+            v.cp=0;
+            return *this;
+        }
+    }
+
+
+/*
+    void print()
+    {
+        for(int i=0;i<sz;i++){
+        std::cout<<el[i]<<" ";
+        }
+        std::cout<<std::endl;
+    }*/
 };
 
 

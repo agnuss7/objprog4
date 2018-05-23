@@ -4,6 +4,7 @@
 #include "Vector.h"
 #include "funkcijos.cpp"
 #include "studentai.h"
+#include <typeinfo>
 #include "Chrono.h"
 using std::cout;
 using std::cin;
@@ -79,18 +80,12 @@ void CV3 (std::string p, std::size_t N)
 }
 int main()
 {
-    double u[]={1,2,3};
-    Vector<int> h;
-    h.push_back(8);
-    h.push_back(8);
-    h.insert(h.begin(),u,u+3);
-    cout<<h[0]<<"\n";
     int s=10;
     int L;
     Timer T;
     do
     {
-        cout<<"ivestkit operacija:\n1 - skaiciuti ivedimo trukme\n2 - skaiciuoti studentus (su 2 kont)\n3 - skaiciuoti studentus (su 3 kont)\n";
+        cout<<"ivestkit operacija:\n1 - skaiciuti ivedimo trukme\n2 - skaiciuoti studentus (su 2 kont)\n3 - skaiciuoti studentus (su 3 kont)\n0 - jei norit baigti programa\n";
         cin>>s;
 
 
