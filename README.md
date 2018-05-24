@@ -44,9 +44,9 @@ elementų skaičius|std::vector | mano Vector
 
 mano Vector'ius greitesnis! 
 
-## Studentu skirstymo lyginimas _milisekundėm_
+## Studentų skirstymo lyginimas _milisekundėm_
 
-#std::vector
+# std::vector
 
 | Generuotų studentų skaičius faile |  2 konteineriai | 3 konteineriai
 |------------ | -------------|--------
@@ -56,7 +56,7 @@ mano Vector'ius greitesnis!
 |10000 | 7066 | 6929 
 |100000 | 54869 | 51717
 
-#mano Vector
+# mano Vector
 
 | Generuotų studentų skaičius faile |  2 konteineriai | 3 konteineriai
 |------------ | -------------|--------
