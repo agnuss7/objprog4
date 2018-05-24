@@ -19,6 +19,18 @@ using iterator = V*;
     {
         delete[] el;
     }
+
+/*  overload ambiguity
+    ///constructor, initializing with a specified value
+    Vector(std::size_t n, V t):cp(n),sz(n),el(new V[cp])
+    {
+        for(std::size_t i=0; i<sz; i++)
+        {
+            el[i]=t;
+        }
+    }
+
+*/
 ///constructor, initializing with a specified range
 template<class InputIt>
     Vector(InputIt f, InputIt l):cp(std::distance(f,l)),sz(std::distance(f,l)),el(new V[cp])
@@ -29,14 +41,7 @@ template<class InputIt>
             f++;
         }
     }
-    ///constructor, initializing with a specified value
-    Vector(std::size_t n, V t):cp(n),sz(n),el(new V[cp])
-    {
-        for(std::size_t i=0; i<sz; i++)
-        {
-            el[i]=t;
-        }
-    }
+
     ///constructor, initializing with an initializer list
     Vector (std::initializer_list<V> A):cp(static_cast<std::size_t>(A.size())),sz(static_cast<std::size_t>(A.size())),el(new V[cp])
     {
@@ -92,6 +97,22 @@ template<class InputIt>
         delete[] el;
         cp=sz;
         el=A;
+    }
+    template< class InputIt >
+    void assign( InputIt f, InputIt l )
+    {
+        delete[] el;
+        cp=std::distance(f,l);
+        sz=cp;
+        el=new V[cp];
+        std::copy(f,l,el);
+    }
+    void assign( std::initializer_list<V> A )
+    {
+        delete[] el;
+        sz=A.size();
+        cp=A.size();
+        std::copy(A.begin(),A.end(),el);
     }
     ///inserts a value in a specified position
     void insert(iterator p, const V& a)
