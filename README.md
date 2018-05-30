@@ -65,3 +65,56 @@ mano Vector'ius greitesnis!
 |1000 | 695 | 539 
 |10000 | 6564 | 5643
 |100000 | 43851 | 79796
+
+# coolish things
+
+Šiek tiek labiau supratau iteratorius. Nustebau, kad lengva su template'ais inicializuoti bet kokio tipo konteinerius.
+
+template<class InputIt>
+    Vector(InputIt f, InputIt l):cp(std::distance(f,l)),sz(std::distance(f,l)),el(new V[cp])
+    {
+        for(std::size_t i=0; i<sz; i++)
+        {
+            el[i]=*f;
+            f++;
+        }
+    }
+                                   
+# terrible things
+
+Šie metodai kertasi, kai template<int>.
+
+void insert(iterator p, const std::size_t c, const V& a)
+    {
+        if(sz+c>=cp){cp+=c;cp*=2;}
+        iterator A=new V[cp];
+        std::copy(el,p,A);
+        std::size_t temp=std::distance(el,p);
+        for(std::size_t  i=0;i<c;i++)
+        {
+           *(A+temp+i)=a;
+        }
+        std::copy(el+temp,el+sz,A+temp+c);
+        delete [] el;
+        el=A;
+        sz+=c;
+    }
+    
+template<class InputIt>
+    void insert(iterator p, InputIt f, InputIt l)
+    {
+        std::size_t c=std::distance(f,l);
+        while(sz+c>=cp){cp*=2;}
+        iterator A=new V[cp];
+        std::copy(el,p,A);
+        std::size_t temp=std::distance(el,p);
+        for(std::size_t  i=0;i<c;i++)
+        {
+           *(A+temp+i)=*f;
+           f++;
+        }
+        std::copy(el+temp,el+sz,A+temp+c);
+        delete [] el;
+        el=A;
+        sz+=c;
+    }
